@@ -42,3 +42,4 @@ jobs:
       run: |
         poetry run pytest tests/integration/test_postgres.py -v
         poetry run pytest tests/adapters/snowflake -v
+        poetry run pytest tests/adapters/clickhouse -v

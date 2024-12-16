@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 
 from odd_collector.adapters.clickhouse.domain import Column
 from odd_collector.adapters.clickhouse.mappers.columns import build_dataset_fields
@@ -12,12 +13,16 @@ class TestDataSetFieldsBuilder(unittest.TestCase):
             host_settings="test", databases="test", tables="test"
         )
 
-    def test_simple_case(self):
+    @parameterized.expand([
+        ("String", Type.TYPE_STRING, "String"),
+        ("Int32", Type.TYPE_INTEGER, "Int32"),
+    ])
+    def test_simple_case(self, db_type, expected_type, expected_logical_type):
         column = Column(
             database="test",
             table="test",
             name="a",
-            type="String",
+            type=db_type,
             position=0,
             default_kind="",
             default_expression="",
@@ -39,8 +44,8 @@ class TestDataSetFieldsBuilder(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertIsInstance(result[0], DataSetField)
         self.assertEqual(result[0].parent_field_oddrn, None)
-        self.assertEqual(result[0].type.type, Type.TYPE_STRING)
-        self.assertEqual(result[0].type.logical_type, "String")
+        self.assertEqual(result[0].type.type, expected_type)
+        self.assertEqual(result[0].type.logical_type, expected_logical_type)
 
     def test_nested_case(self):
         column = Column(

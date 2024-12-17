@@ -16,6 +16,7 @@ class TestDataSetFieldsBuilder(unittest.TestCase):
     @parameterized.expand([
         ("String", Type.TYPE_STRING, "String"),
         ("Int32", Type.TYPE_INTEGER, "Int32"),
+        ("Nullable(String)", Type.TYPE_STRING, "Nullable(String)"),
     ])
     def test_simple_case(self, db_type, expected_type, expected_logical_type):
         column = Column(

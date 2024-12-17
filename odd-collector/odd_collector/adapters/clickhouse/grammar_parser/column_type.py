@@ -126,6 +126,15 @@ class Nested(ParseType):
     def __repr__(self) -> str:
         return f"Nested({self.fields})"
 
+class Nullable(ParseType):
+    def __init__(self, type: BasicType):
+        self.type = type
+
+    def to_clickhouse_type(self) -> str:
+        return f"Nullable({self.type.to_clickhouse_type()})"
+
+    def __repr__(self) -> str:
+        return f"Nullable({self.type})"
 
 class Field:
     def __init__(self, name: str, value: ParseType):

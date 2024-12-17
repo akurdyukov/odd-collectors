@@ -16,6 +16,7 @@ from ..grammar_parser.column_type import (
     Nested,
     ParseType,
     Tuple,
+    Nullable,
 )
 from ..grammar_parser.parser import parser, traverse_tree
 from ..logger import logger
@@ -159,6 +160,8 @@ def type_to_oddrn_type(column_type: ParseType) -> Type:
         (BasicType, DateTime, DateTime64, LowCardinality, AggregateFunction),
     ):
         return TYPES_SQL_TO_ODD.get(column_type.type_name, Type.TYPE_UNKNOWN)
+    elif isinstance(column_type, Nullable):
+        return TYPES_SQL_TO_ODD.get(column_type.type.type_name, Type.TYPE_UNKNOWN)
     elif isinstance(column_type, str):
         return TYPES_SQL_TO_ODD.get(column_type, Type.TYPE_UNKNOWN)
     elif isinstance(column_type, Tuple):

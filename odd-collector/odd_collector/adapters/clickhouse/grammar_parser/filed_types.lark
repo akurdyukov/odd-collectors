@@ -11,6 +11,7 @@
     | date32
     | datetime
     | datetime64
+    | nullable
     | BASIC_TYPE
 
 BASIC_TYPE: "String"
@@ -29,10 +30,11 @@ BASIC_TYPE: "String"
           | "BFloat16"
           | "Decimal"
           | "Array"
-          | "Nullable"
           | "UUID"
           | "Enum"
           | "Bool"
+
+nullable: "Nullable" "(" BASIC_TYPE ")"
 
 array: "Array" "(" type ")"
 

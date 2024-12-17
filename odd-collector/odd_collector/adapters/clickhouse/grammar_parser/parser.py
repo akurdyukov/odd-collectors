@@ -16,6 +16,7 @@ from .column_type import (
     Nested,
     ParseType,
     Tuple,
+    Nullable,
 )
 from .exceptions import *
 
@@ -122,6 +123,17 @@ def traverse_tree(node) -> Union[ParseType, str, Field, None]:
                     f"Unexpected field type type: {type(field_type)}"
                 )
             return Field(field_name, field_type)
+
+        elif node.type == "nullable":
+            if len(node.children) != 1:
+                raise StructureError(
+                    f"Invalid array structure: expected 1 child, got: {len(node.children)}"
+                )
+            child = node.children[0]
+            child_value = traverse_tree(child)
+            if not isinstance(child_value, ParseType):
+                raise NonTypeObjectError(f"Nullable got a non-type object: {child}")
+            return Nullable(child_value)
 
         else:
             raise UnexpectedTypeError(f"Unexpected tree type: {node.data}")

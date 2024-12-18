@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 
 class ParseType(ABC):
@@ -44,7 +44,7 @@ class LowCardinality(ParseType):
 
 
 class DateTime(ParseType):
-    def __init__(self, type_name: str, time_zone: str):
+    def __init__(self, type_name: str, time_zone: Optional[str]):
         self.type_name = type_name
         self.time_zone = time_zone
 
@@ -53,7 +53,7 @@ class DateTime(ParseType):
 
 
 class DateTime64(ParseType):
-    def __init__(self, type_name: str, digit, time_zone: str):
+    def __init__(self, type_name: str, digit, time_zone: Optional[str]):
         self.type_name = type_name
         self.digit = digit
         self.time_zone = time_zone

@@ -44,11 +44,19 @@ def traverse_tree(node) -> Union[ParseType, str, Field, None]:
         if node.data == "date32":
             return BasicType("Date32")
         if node.data == "datetime":
-            return DateTime("DateTime", node.children[0].value)
+            if len(node.children) == 1:
+                return DateTime("DateTime", node.children[0].value)
+            else:
+                return DateTime("DateTime", None)
         if node.data == "datetime64":
-            return DateTime64(
-                "DateTime64", node.children[0].value, node.children[2].value
-            )
+            if len(node.children) == 3:
+                return DateTime64(
+                    "DateTime64", node.children[0].value, node.children[2].value
+                )
+            else:
+                return DateTime64(
+                    "DateTime64", node.children[0].value, None
+                )
         if node.data == "array":
             if len(node.children) != 1:
                 raise StructureError(

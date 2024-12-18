@@ -49,6 +49,8 @@ class DateTime(ParseType):
         self.time_zone = time_zone
 
     def to_clickhouse_type(self) -> str:
+        if self.time_zone is None:
+            return f"{self.type_name}"
         return f"{self.type_name}({self.time_zone})"
 
 
@@ -59,6 +61,8 @@ class DateTime64(ParseType):
         self.time_zone = time_zone
 
     def to_clickhouse_type(self) -> str:
+        if self.time_zone is None:
+            return f"{self.type_name}({self.digit})"
         return f"{self.type_name}({self.digit}, {self.time_zone})"
 
 

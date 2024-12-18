@@ -124,7 +124,7 @@ def traverse_tree(node) -> Union[ParseType, str, Field, None]:
                 )
             return Field(field_name, field_type)
 
-        elif node.type == "nullable":
+        elif node.data == "nullable":
             if len(node.children) != 1:
                 raise StructureError(
                     f"Invalid array structure: expected 1 child, got: {len(node.children)}"

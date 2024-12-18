@@ -63,9 +63,9 @@ date:  "Date"
 
 date32: "Date32"
 
-datetime: "DateTime" "(" TIMEZONE ")"
+datetime: "DateTime" "(" [ TIMEZONE ] ")"
 
-datetime64: "DateTime64" "(" DIGIT "," WS TIMEZONE ")"
+datetime64: "DateTime64" "(" DIGIT [ "," WS TIMEZONE ] ")"
 
 FIELD_NAME: (LETTER | "_") (LETTER | "_" | DIGIT | "-")*
 TIMEZONE: "'" (LETTER | "/" )* "'"

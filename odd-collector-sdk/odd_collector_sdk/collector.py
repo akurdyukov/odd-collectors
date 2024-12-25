@@ -69,7 +69,7 @@ class Collector:
             verify_ssl=self.config.verify_ssl,
         )
 
-    def start_polling(self):
+    async def start_polling(self):
         misfire_grace_time = (
             self.config.misfire_grace_time or self.config.default_pulling_interval * 60
         )
@@ -87,6 +87,7 @@ class Collector:
                 id=adapter.config.name,
             )
         scheduler.start()
+        logger.info("Scheduler started")
 
     async def register_data_sources(self):
         data_sources: List[DataSource] = [
@@ -128,7 +129,7 @@ class Collector:
                 logger.info("Collector will be run once.")
                 loop.run_until_complete(self.one_time_run())
             else:
-                self.start_polling()
+                loop.create_task(self.start_polling)
                 loop.run_forever()
         except PlatformApiError as e:
             logger.error(e)

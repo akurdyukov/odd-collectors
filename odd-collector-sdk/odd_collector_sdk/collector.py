@@ -118,7 +118,8 @@ class Collector:
             signals = (signal.SIGHUP, signal.SIGTERM, signal.SIGINT)
             for s in signals:
                 loop.add_signal_handler(
-                    s, lambda s=s: asyncio.create_task(shutdown_by(s, loop))
+                    s, lambda sgnl=s: asyncio.create_task(shutdown_by(sgnl, loop)),
+                    s,
                 )
 
             loop.run_until_complete(self.register_data_sources())
@@ -129,7 +130,7 @@ class Collector:
                 logger.info("Collector will be run once.")
                 loop.run_until_complete(self.one_time_run())
             else:
-                loop.create_task(self.start_polling)
+                loop.create_task(self.start_polling())
                 loop.run_forever()
         except PlatformApiError as e:
             logger.error(e)
